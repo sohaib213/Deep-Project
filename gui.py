@@ -105,15 +105,22 @@ def run_model():
 
 def classify_single_sample():
     if not trained_state:
-        messagebox.showwarning("Warning", "Please train a model first by clicking 'Run Classification'")
+        messagebox.showwarning("Warning", "Please train a model first by clicking 'Run Classification'.")
         return
         
     try:
-        raw_v1 = sample_f1_entry.get().strip()
-        raw_v2 = sample_f2_entry.get().strip()
+        raw_v1 = sample_f1_entry.get().strip().title()
+        raw_v2 = sample_f2_entry.get().strip().title()
         
-        v1 = ORIGIN_MAP.get(raw_v1, float(raw_v1)) if trained_state['f1'] == 'OriginLocation' and raw_v1 in ORIGIN_MAP else float(raw_v1)
-        v2 = ORIGIN_MAP.get(raw_v2, float(raw_v2)) if trained_state['f2'] == 'OriginLocation' and raw_v2 in ORIGIN_MAP else float(raw_v2)
+        if trained_state['f1'] == 'OriginLocation' and raw_v1 in ORIGIN_MAP:
+            v1 = ORIGIN_MAP[raw_v1]
+        else:
+            v1 = float(raw_v1)
+            
+        if trained_state['f2'] == 'OriginLocation' and raw_v2 in ORIGIN_MAP:
+            v2 = ORIGIN_MAP[raw_v2]
+        else:
+            v2 = float(raw_v2)
         
         sample = np.array([v1, v2], dtype=float)
         sample_scaled = (sample - trained_state['mean']) / trained_state['std']
@@ -125,9 +132,10 @@ def classify_single_sample():
             
         predicted_class = trained_state['c1'] if pred == 1 else trained_state['c2']
         messagebox.showinfo("Sample Prediction", f"Predicted Class ID: {predicted_class} ({pred:+d})")
+        
     except ValueError:
-        messagebox.showerror("Error", "Enter valid numbers (or Torgersen/Biscoe/Dream for OriginLocation)")
-
+        messagebox.showerror("Error", "Enter valid numbers (or Torgersen/Biscoe/Dream for OriginLocation).")
+        
 def on_closing():
     plt.close('all')
     root.quit()     
