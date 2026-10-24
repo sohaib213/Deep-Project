@@ -7,6 +7,7 @@ def Adaline(x, y, learning_rate=0.01, n_iter=50, mse_threshold=0.01, use_bias=Tr
     y = np.asarray(y, dtype=float)
     n_samples = x.shape[0]
 
+    np.random.seed(42)
     weights = np.random.uniform(-0.1, 0.1, x.shape[1])
     bias = np.random.uniform(-0.1, 0.1) if use_bias else 0.0
 

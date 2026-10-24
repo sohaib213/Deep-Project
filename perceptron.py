@@ -3,7 +3,7 @@ import numpy as np
 def perceptron_train(x, y, learning_rate=0.01, epochs=50, use_bias=True):
     x = np.asarray(x, dtype=float)
     y = np.asarray(y, dtype=float)
-    
+    np.random.seed(42)
     weights = np.random.uniform(-0.1, 0.1, x.shape[1])
     bias = np.random.uniform(-0.1, 0.1) if use_bias else 0.0
 
