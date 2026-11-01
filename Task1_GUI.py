@@ -6,9 +6,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 
 from dataPreprocessing import load_and_preprocess, ORIGIN_MAP
-from perceptron import perceptron_train, predict_perceptron
+from Models.perceptron import perceptron_train, predict_perceptron
 from metrics import evaluate_metrics
-from Adaline import Adaline, predict
+from Models.Adaline import Adaline, predict
 
 BG_COLOR = "#080616"
 FRAME_COLOR = "#1A1953"
