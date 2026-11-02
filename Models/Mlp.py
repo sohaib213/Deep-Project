@@ -69,18 +69,21 @@ def Mlp_train(x, y, n_of_neurons_per_hidden_layer=[5],n_hidden_layers=1,activati
     return weights, biases
 
 
-def Mlp_predict(x, weights, biases, activation_sigmoid=True):
+def Mlp_predict(x, weights, biases, activation_sigmoid=True, raw=False):
     current_input = np.atleast_2d(x)
-    for w,b in zip(weights,biases):
-        net_value= np.dot(current_input, w) + b
-        if activation_sigmoid :
+    for w, b in zip(weights, biases):
+        net_value = np.dot(current_input, w) + b
+        if activation_sigmoid:
             net_value = 1.0 / (1.0 + np.exp(-np.clip(net_value, -500, 500)))
-        else :
-            net_value =np.tanh(net_value)
-        current_input =net_value
-    
+        else:
+            net_value = np.tanh(net_value)
+        current_input = net_value
+
     final_out = current_input.flatten()
-    #one-hot encode it 
+    if raw:
+        return final_out
+
+    # one-hot version (used for testing / confusion matrix)
     prediction = np.zeros_like(final_out)
-    prediction[np.argmax(final_out)] = 1.0  
-    return prediction  
+    prediction[np.argmax(final_out)] = 1.0
+    return prediction

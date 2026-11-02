@@ -447,7 +447,7 @@ class MlpApp:
             sample = (np.array(values) - self.state["mean"]) / self.state["std"]
             pred = np.asarray(Mlp_predict(
                 sample, self.state["weights"], self.state["biases"],
-                self.state["use_sigmoid"])).flatten()
+                self.state["use_sigmoid"], raw=True)).flatten()
         except Exception as e:
             self._set_status(f"Could not classify: {e}", "error")
             return
@@ -463,7 +463,7 @@ class MlpApp:
             child.destroy()
 
         # Tanh outputs are in [-1, 1], sigmoid in [0, 1]: map both to 0-100
-        lo = -1.0 if not self.state["use_sigmoid"] else 0.0
+        lo = 0.0
         for i, v in enumerate(pred):
             name = str(classes[i]) if i < len(classes) else f"Class {i}"
             font = ("Segoe UI", 10, "bold") if i == best else ("Segoe UI", 10)
